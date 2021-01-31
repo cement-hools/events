@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{% if event %}Редактировать {% else %}Новая запись{% endif %}{% endblock %}
+{% block header %}{% if event %}Редактировать {% else %}Новая запись{% endif %}{% endblock %}
+{% block content %}
+
+    <form method="post" enctype="multipart/form-data" action="{% if event %}{% url 'event_edit' event.pk %}{% else %}{% url 'new_event' %}{% endif %}">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group row" aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}>
+            <label for="{{ field.id_for_label }}"
+                class="col-md-4 col-form-label text-md-right">{{ field.label }}{% if field.field.required %}<span
+                    class="required">*</span>{% endif %}</label>
+            <div class="col-md-6">
+
+                {# подключаем фильтр и указываем класс #}
+                {{ field }}
+
+                {% if field.help_text %}
+                <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="col-md-6 offset-md-4">
+            <button type="submit" class="btn btn-primary">
+                {% if event %}Сохранить{% else %}Добавить{% endif %}
+            </button>
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load cache %}
+{% block title %} Последние обновления {% endblock %}
+
+{% block content %}
+    <h1> {{ event.title }} </h1>
+    {% for bloсk in bloсks %}
+    <h3>
+        Title: {{ bloсk.title }}, Cost: {{bloсk.cost}}
+    </h3>
+    <p>{{ bloсk.description|linebreaksbr }}</p>
+    {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+
+{% endblock %}
