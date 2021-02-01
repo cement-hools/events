@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Sum
 
 User = get_user_model()
 
@@ -10,6 +11,10 @@ class Event(models.Model):
 
     def summ(self):
         return sum([bloсk.cost for bloсk in self.bloсks.all()])
+    # # @property
+    # def summ(self):
+    #     total = self.all().aggregate(valor=Sum('blocks'))
+    #     return total.get('valor')
 
     def all_costs(self):
         pass
@@ -30,6 +35,5 @@ class EventBloсk(models.Model):
 
 
 class Booking(models.Model):
-    block = models.ForeignKey(EventBloсk, on_delete=models.CASCADE,
-                              related_name='bookings')
-    users = models.ManyToManyField(User, related_name='users')
+    block = models.ManyToManyField(EventBloсk, related_name='bookings')
+    users = models.ManyToManyField(User, related_name='bookings')

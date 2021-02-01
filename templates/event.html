@@ -4,11 +4,13 @@
 
 {% block content %}
     <h1> {{ event.title }} </h1>
+    <a href="{% url 'event_booking' event.id %}" role="button">Записаться</a>
     {% for bloсk in bloсks %}
     <h3>
         Title: {{ bloсk.title }}, Cost: {{bloсk.cost}}
     </h3>
     <p>{{ bloсk.description|linebreaksbr }}</p>
+    записались: {{ bloсk.bookings.users }}
     {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
 
