@@ -10,7 +10,7 @@
         Title: {{ bloсk.title }}, Cost: {{bloсk.cost}}
     </h3>
     <p>{{ bloсk.description|linebreaksbr }}</p>
-    записались: {{ bloсk.bookings.users }}
+    записались: {{ bloсk }}
     {% if not forloop.last %}<hr>{% endif %}
     {% endfor %}
 

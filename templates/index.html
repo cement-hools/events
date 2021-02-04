@@ -6,7 +6,7 @@
 
     {% for event in events %}
     <a href="{% url 'event' event.id %}" role="button">
-        <h3>Title: {{ event.title }}, Cost: {{event.summ}}</h3>
+        <h3>Title: {{ event.title }}, Cost: {{event.total_cost}}</h3>
         <a href="{% url 'event_edit' event.id %}"
            role="button"> Edit </a>
     </a>

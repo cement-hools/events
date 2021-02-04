@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import EventForm, BookingForm
-from .models import Event
+from .models import Event, EventBloсk
 
 
 def index(request):
@@ -15,9 +15,11 @@ def event_view(request, event_id):
     """Просмотр мероприятия"""
     event = get_object_or_404(Event, pk=event_id)
     bloсks = event.bloсks.all()
+    qwe = EventBloсk.objects.all().first()
     context = {
         "event": event,
         "bloсks": bloсks,
+        'qwe': qwe,
     }
     return render(request, "event.html", context)
 
@@ -32,11 +34,12 @@ def event_edit(request, event_id):
 
 
 def add_booking(request, event_id):
-    form = BookingForm(request.POST, event_id=event_id)
+    user = request.user
+    print(user)
+    form = BookingForm(request.POST, event_id=event_id, user=user)
     event = get_object_or_404(Event, pk=event_id)
     if form.is_valid():
-        booking = form.save(commit=False)
-        booking.save()
+        form.save()
         print('created')
         return redirect("event", event_id=event_id)
     return render(request, "booking.html",
