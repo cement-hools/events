@@ -30,7 +30,21 @@ class EventBloсk(models.Model):
 
 class Booking(models.Model):
     """Регистрация пользователя на ммероприятие."""
-    block = models.ManyToManyField(EventBloсk, related_name='bookings',
-                                   null=False)
-    user = models.ForeignKey(User, related_name='bookings',
-                                on_delete=models.CASCADE)
+    blocks = models.ManyToManyField(EventBloсk, related_name='bookings',
+                                    blank=False)
+    users = models.ManyToManyField(User, related_name='bookings',
+                                   blank=False)
+
+    def get_event(self):
+        event = self.blocks.first().event
+        return event
+
+    def __str__(self):
+        event = self.get_event()
+        blocks = [block.title for block in self.blocks.all()]
+        blocks_title = ', '.join(blocks)
+        users = [user.username for user in self.users.all()]
+        users_names = ', '.join(users)
+        return (f'регистрация №{self.pk} на мероприятие {event}: '
+                f'выбранные блоки {blocks_title}. '
+                f'пользователи: {users_names}')

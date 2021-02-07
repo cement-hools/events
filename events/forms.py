@@ -8,7 +8,8 @@ User = get_user_model()
 
 
 class EventForm(forms.ModelForm):
-    """Форма создания и релактирования мероприятия."""
+    """Форма создания и редактирования мероприятия."""
+
     class Meta:
         model = Event
         fields = ("title", "description",)
@@ -16,17 +17,25 @@ class EventForm(forms.ModelForm):
 
 class BookingForm(forms.ModelForm):
     """Форма регистрации пользователя на блоки мероприятия."""
+
     def __init__(self, *args, **kwargs):
         self.event_id = kwargs.pop('event_id')
-        self.user = kwargs.pop('user')
         super(BookingForm, self).__init__(*args, **kwargs)
-        self.fields['block'].queryset = EventBloсk.objects.filter(
-            event=self.event_id)
-        self.fields['user'].initial = self.user
+        event_bloks_list = EventBloсk.objects.filter(event=self.event_id)
+        self.fields['blocks'].queryset = event_bloks_list
+        
+        events_bokings = Booking.objects.filter(blocks__in=event_bloks_list)
+        users_id_list = []
+        for booking in events_bokings:
+            users_id = [user.id for user in booking.users.all()]
+            users_id_list.extend(users_id)
+        events_unregistered_users = User.objects.exclude(id__in=users_id_list)
+        self.fields['users'].queryset = events_unregistered_users
 
     class Meta:
         model = Booking
-        fields = ('block', 'user')
+        fields = ('blocks', 'users')
         widgets = {
-            'block': CheckboxSelectMultiple(),
+            'blocks': CheckboxSelectMultiple(),
+            'users': CheckboxSelectMultiple(),
         }

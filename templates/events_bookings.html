@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load cache %}
+{% block title %} Последние обновления {% endblock %}
+
+{% block content %}
+<h1> <a href="{% url 'event' event.id %}" role="button">{{ event.title }} </a></h1>
+    {% for booking in bookings %}
+    <h6>
+        <a href="{% url 'events_bookings_edit' event.id booking.id %}" role="button">{{ booking }} </a>
+    </h6>
+    <p>{{ bloсk.description|linebreaksbr }}</p>
+    {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+
+{% endblock %}
