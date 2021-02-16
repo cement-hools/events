@@ -60,7 +60,7 @@ def events_bookings_edit(request, event_id, booking_id):
     event = get_object_or_404(Event, pk=event_id)
     events_bloсks = event.bloсks.all()
     bookings = Booking.objects.filter(blocks__in=events_bloсks)
-    form = BookingForm(request.POST or None,  event_id=event_id instance=bookings)
+    form = BookingForm(request.POST or None,  event_id=event_id, instance=bookings)
     if form.is_valid():
         form.save()
         return redirect("index")
