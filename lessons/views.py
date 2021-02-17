@@ -5,7 +5,6 @@ from .models import Lesson, Student
 
 def index(request):
     student = get_object_or_404(Student, user=request.user)
-    print(student)
     students_lessons = student.course.lessons.all()
     lesson_arr = []
     for lesson in students_lessons:

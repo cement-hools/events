@@ -9,16 +9,18 @@ class Course(models.Model):
     description = models.TextField()
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
 
 
 class LessonsType(models.Model):
-    title = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Lesson(models.Model):
@@ -32,6 +34,8 @@ class Lesson(models.Model):
                                 related_name='lessons', null=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return self.title

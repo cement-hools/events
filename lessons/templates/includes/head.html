@@ -1,36 +1,8 @@
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>{% block title %}The Last Social Media You'll Ever Need{% endblock %} | Yatube</title>
-<!-- Загрузка статики -->
-{% load static %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css"/>
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
-
-<script>
-
-    $(document).ready(function() {
-
-        $('#calendar').fullCalendar({
-            defaultDate: '2016-07-19',
-            editable: true,
-            eventLimit: true, // allow "more" link when too many events
-            events: [
-                {% for event in events %}
-                    {
-                        title: "{{ event.title}}",
-                        start: '{{ event.start_date|date:"Y-m-d" }}',
-                        end: '{{ event.end_date|date:"Y-m-d" }}',
-                        id: '{{ event.id }}',
-                    },
-                {% endfor %}
-            ]
-        });
-
-    });
-
-</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}The Last Social Media You'll Ever Need{% endblock %} | Yatube</title>
+    <!-- Загрузка статики -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
