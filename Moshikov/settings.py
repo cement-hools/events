@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'events',
     'fullcalendar',
+    'lessons',
 
     'django.contrib.admin',
     'django.contrib.auth',
