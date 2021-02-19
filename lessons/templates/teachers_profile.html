@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load cache %}
+{% block title %} Календарь {% endblock %}
+
+{% block content %}
+
+
+
+<br><br><br>
+
+    {% for course in teachers_courses %}
+        <h3>Курс "{{ course }}"</h3>
+            <h6> Студенты: </h6>
+            <ul>
+                {% for student in course.students.all %}
+                    <li> {{ student.user }} </li>
+                {% endfor %}
+            </ul>
+    {% endfor %}
+<br>
+<h4>json Уроков</h4>
+{% for lesson in teachers_lessons_json %}
+    <p>{{lesson}}</p>
+{% endfor %}
+
+
+{% endblock %}

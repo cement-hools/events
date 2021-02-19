@@ -4,8 +4,11 @@
 
 {% block content %}
 
-    <br>
-    {{ lessons }}
-
+    {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}!</p>
+      {% else %}
+        <p>You are not logged in.</p>
+        <a href="{% url 'login' %}">Log In</a>
+      {% endif %}
 
 {% endblock %}
