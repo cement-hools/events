@@ -1,0 +1,1 @@
+web: gunicorn lessons-krasnodar.wsgi --log-file -
