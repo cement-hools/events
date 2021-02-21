@@ -1,1 +1,1 @@
-web: gunicorn krasnodar-calendar.wsgi --log-file -
+web: gunicorn Moshikov.wsgi --log-file -
