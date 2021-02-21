@@ -1,1 +1,1 @@
-web: gunicorn lessons-krasnodar.wsgi --log-file -
+web: gunicorn krasnodar-calendar.wsgi --log-file -
