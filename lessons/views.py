@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import CourseForm
-from .models import Student, Course
+from .forms import CourseForm, AttendanceForm
+from .models import Student, Course, Lesson, Attendance
+
+User = get_user_model()
 
 
 def lessons_in_json(lessons):
@@ -88,3 +91,44 @@ def course_view(request, course_id):
         'students': students,
     }
     return render(request, "course_view.html", context)
+
+
+def attendance(request, lesson_id):
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    course_id = lesson.course.id
+    students = lesson.course.students.all()
+    students_id = [student.user.id for student in students]
+    students_user = User.objects.filter(id__in=students_id)
+
+    form = AttendanceForm(request.POST,
+                          lessons=lesson.course.lessons.all(),
+                          students=students_user,
+                          )
+    if form.is_valid():
+        form.save()
+        print("created")
+        return redirect("course_view", course_id=course_id)
+    return render(request, "attendance.html",
+                  {"form": form, 'course_id': course_id,
+                   'lesson_id': lesson_id, })
+
+
+def attendance_edit(request, lesson_id):
+    attendance = get_object_or_404(Attendance, lesson=lesson_id)
+    print(attendance)
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    students = lesson.course.students.all()
+    students_id = [student.user.id for student in students]
+    students_user = User.objects.filter(id__in=students_id)
+    form = AttendanceForm(request.POST or None,
+                          lessons=lesson.course.lessons.all(),
+                          students=students_user,
+                          instance=attendance
+                          )
+    if form.is_valid():
+        # form.save()
+        print("created_edit")
+        return redirect("course_view", course_id=course_id)
+    return render(request, "attendance.html",
+                  {"form": form, 'course_id': course_id,
+                   'lesson_id': lesson_id, })
