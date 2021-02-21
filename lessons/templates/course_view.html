@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load cache %}
+{% block title %} {{course}} {% endblock %}
+
+{% block content %}
+
+<style>
+    .layer1 {
+    background-color: #dbefff; /* Цвет фона слоя */
+    padding: 5px; /* Поля вокруг текста */
+    margin: 5px;
+    float: left; /* Обтекание по правому краю */
+    width: 200px; /* Ширина слоя */
+    }
+    .layer2 {
+    background-color: #dbefff; /* Цвет фона слоя */
+    padding: 5px; /* Поля вокруг текста */
+    margin: 5px;
+    width: 300px; /* Ширина слоя */
+    float: left; /* Обтекание по правому краю */
+    }
+    .clear {
+    clear: left; /* Отмена обтекания */
+    }
+</style>
+
+
+<h3>Курс "{{course}}"</h3>
+<br>
+<div class="layer1">
+    <h4>Студенты:</h4>
+    <a href="">Добавить студента</a>
+    <br><br>
+    {% for student in students %}
+    <ul>
+        <li> <h5>{{ student.user }}</h5> </li>
+    </ul>
+    {% endfor %}
+</div>
+<div class="layer2">
+    <h4>Уроки:</h4>
+    <a href="">Добавить урок</a>
+    <br><br>
+    {% for lesson in lessons %}
+    <ul>
+        <li> <h5>{{ lesson }}</h5> </li>
+    </ul>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

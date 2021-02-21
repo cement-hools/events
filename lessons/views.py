@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
+from .forms import CourseForm
 from .models import Student, Course
 
 
@@ -40,3 +41,50 @@ def teachers_profile(request):
         'teachers_lessons_json': teachers_lessons_json,
     }
     return render(request, 'teachers_profile.html', context)
+
+
+def admins_profile(request):
+    courses = Course.objects.all()
+    context = {
+        'courses': courses,
+    }
+    return render(request, 'admins_profile.html', context)
+
+
+def new_course(request):
+    """Создание нового курса"""
+    form = CourseForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('admins_profile')
+    return render(request, 'new_course.html', {'form': form})
+
+
+def course_edit(request, course_id):
+    """Редактировать курс."""
+    course = get_object_or_404(Course, pk=course_id)
+    form = CourseForm(request.POST or None, instance=course)
+
+    context = {'form': form, 'course': course}
+    if form.is_valid():
+        form.save()
+        return redirect('admins_profile')
+    return render(request, "new_course.html", context)
+
+
+def course_delete(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    course.delete()
+    return redirect('admins_profile')
+
+
+def course_view(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    lessons = course.lessons.all()
+    students = Student.objects.filter(course__id=course_id)
+    context = {
+        'course': course,
+        'lessons': lessons,
+        'students': students,
+    }
+    return render(request, "course_view.html", context)

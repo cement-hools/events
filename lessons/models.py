@@ -32,8 +32,8 @@ class Lesson(models.Model):
                              related_name='lessons', null=True)
     teacher = models.ForeignKey(User, on_delete=models.SET_NULL,
                                 related_name='lessons', null=True)
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True, null=True, blank=True)
 
@@ -48,3 +48,14 @@ class Student(models.Model):
 
     def __str__(self):
         return f'Студент {self.user} записан на "{self.course}"'
+
+
+class Attendance(models.Model):
+    lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
+    student = models.ManyToManyField(User, related_name='attendances',
+                                     blank=True)
+    # attendance = models.BooleanField()
+
+    # def __str__(self):
+    #     attendance = 'присутствовал' if self.attendance else 'не присутствовал'
+    #     return f'Студент {self.student} {attendance} на уроке "{self.lesson}"'

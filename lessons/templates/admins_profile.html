@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load cache %}
+{% block title %} Календарь {% endblock %}
+
+{% block content %}
+
+<a href="{% url 'new_course' %}" role="button">Создать Курс</a>
+
+<br><br>
+    {% for course in courses %}
+        <a href="{% url 'course_view' course.id %}"><h4>Курс "{{ course }}"</h4>
+        <a href="{% url 'course_edit' course.id %}">Редактировать</a> | <a href="{% url 'course_delete' course.id %}">Удалить</a>
+        <br><br>
+{% endfor %}
+<br>
+
+
+{% endblock %}
