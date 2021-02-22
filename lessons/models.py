@@ -56,6 +56,5 @@ class Attendance(models.Model):
                                      blank=True)
     # attendance = models.BooleanField()
 
-    # def __str__(self):
-    #     attendance = 'присутствовал' if self.attendance else 'не присутствовал'
-    #     return f'Студент {self.student} {attendance} на уроке "{self.lesson}"'
+    def __str__(self):
+        return f'Посещаемость урока {self.lesson}'

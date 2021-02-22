@@ -43,7 +43,7 @@
     <br><br>
     {% for lesson in lessons %}
     <ul>
-        <li> <h5>{{ lesson }}</h5> <a href="{% url 'attendance_edit' lesson.id %}">присутсвие</a> | <a href="">редактировать</a> </li>
+        <li> <h5>{{ lesson }}</h5> <a href="{% url 'attendance' lesson.id %}">присутсвие</a> | <a href="">редактировать</a> </li>
     </ul>
     {% endfor %}
 </div>
