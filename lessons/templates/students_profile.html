@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load cache %}
+{% block title %} Календарь {% endblock %}
+
+{% block content %}
+
+
+
+<br><br><br>
+
+    {% for lesson in lessons %}
+        <p>Курс "{{ lesson }}"</p>
+
+    {% endfor %}
+
+
+
+{% endblock %}

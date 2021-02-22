@@ -1,37 +1,37 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import CourseForm, AttendanceForm
 from .models import Student, Course, Lesson, Attendance
+from .my_functions import group_required, lessons_in_json
 
 User = get_user_model()
 
-
-def lessons_in_json(lessons):
-    lesson_arr = []
-    for lesson in lessons:
-        lesson_sub_arr = dict()
-        lesson_sub_arr['id'] = lesson.id
-        lesson_sub_arr['title'] = lesson.title
-        lesson_sub_arr['start'] = str(lesson.start_date)
-        lesson_sub_arr['end'] = str(lesson.end_date)
-        lesson_arr.append(lesson_sub_arr)
-    return lesson_arr
+GROUP_ADMIN = Group.objects.get(name='admin')
+GROUP_TEACHER = Group.objects.get(name='teacher')
+GROUP_STUDENT = Group.objects.get(name='student')
 
 
 def index(request):
-    if request.user.is_authenticated:
-        print('group: ', request.user.groups.all())
+    if not request.user.is_authenticated:
         return render(request, 'index.html', {})
+    print('group: ', request.user.groups.all())
+    if request.user.groups.filter(name__in=['admin', ]).exists():
+        print('gooood!!!!')
     return render(request, 'index.html', {})
 
+
+@group_required('student')
+def students_profile(request):
     student = get_object_or_404(Student, user=request.user)
     students_lessons = student.course.lessons.all()
     students_lessons_json = lessons_in_json(students_lessons)
     context = {'lessons': students_lessons_json}
-    return render(request, 'index.html', context)
+    return render(request, 'students_profile.html', context)
 
 
+@group_required(GROUP_TEACHER)
 def teachers_profile(request):
     teacher = request.user
     teachers_lessons = teacher.lessons.all()
@@ -46,14 +46,18 @@ def teachers_profile(request):
     return render(request, 'teachers_profile.html', context)
 
 
+@group_required(GROUP_ADMIN)
 def admins_profile(request):
-    courses = Course.objects.all()
-    context = {
-        'courses': courses,
-    }
-    return render(request, 'admins_profile.html', context)
+    if request.user.groups.filter(name__in=[GROUP_ADMIN]).exists():
+        courses = Course.objects.all()
+        context = {
+            'courses': courses,
+        }
+        return render(request, 'admins_profile.html', context)
+    return render(request, 'index.html', {})
 
 
+@group_required(GROUP_ADMIN)
 def new_course(request):
     """Создание нового курса"""
     form = CourseForm(request.POST or None)
@@ -63,6 +67,7 @@ def new_course(request):
     return render(request, 'new_course.html', {'form': form})
 
 
+@group_required(GROUP_ADMIN)
 def course_edit(request, course_id):
     """Редактировать курс."""
     course = get_object_or_404(Course, pk=course_id)
@@ -75,12 +80,14 @@ def course_edit(request, course_id):
     return render(request, "new_course.html", context)
 
 
+@group_required(GROUP_ADMIN)
 def course_delete(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     course.delete()
     return redirect('admins_profile')
 
 
+@group_required(GROUP_ADMIN)
 def course_view(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     lessons = course.lessons.all()
@@ -93,6 +100,7 @@ def course_view(request, course_id):
     return render(request, "course_view.html", context)
 
 
+@group_required(GROUP_ADMIN)
 def attendance(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     students = lesson.course.students.all()
