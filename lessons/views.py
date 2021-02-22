@@ -85,10 +85,12 @@ def course_view(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     lessons = course.lessons.all()
     students = Student.objects.filter(course__id=course_id)
+    attendance = Attendance.objects.all()
     context = {
         'course': course,
         'lessons': lessons,
         'students': students,
+        'attendance': attendance,
     }
     return render(request, "course_view.html", context)
 
@@ -101,9 +103,10 @@ def attendance(request, lesson_id):
     students_user = User.objects.filter(id__in=students_id)
 
     form = AttendanceForm(request.POST,
-                          lessons=lesson.course.lessons.all(),
+                          lesson=lesson,
                           students=students_user,
                           )
+    print('hi')
     if form.is_valid():
         form.save()
         print("created")
@@ -115,20 +118,21 @@ def attendance(request, lesson_id):
 
 def attendance_edit(request, lesson_id):
     attendance = get_object_or_404(Attendance, lesson=lesson_id)
-    print(attendance)
+    print(attendance, lesson_id)
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     students = lesson.course.students.all()
     students_id = [student.user.id for student in students]
     students_user = User.objects.filter(id__in=students_id)
     form = AttendanceForm(request.POST or None,
-                          lessons=lesson.course.lessons.all(),
+                          lesson=lesson,
                           students=students_user,
-                          instance=attendance
+                          instance=attendance,
+                          # initial={'student': students_user}
                           )
     if form.is_valid():
-        # form.save()
+        form.save()
         print("created_edit")
-        return redirect("course_view", course_id=course_id)
+        return redirect("course_view", course_id=lesson.course.id)
     return render(request, "attendance.html",
-                  {"form": form, 'course_id': course_id,
+                  {"form": form, 'course_id': lesson.course.id,
                    'lesson_id': lesson_id, })

@@ -1,9 +1,6 @@
-import datetime
-
 from django import forms
-from django.contrib.admin import widgets
 from django.contrib.auth import get_user_model
-from django.forms import SelectDateWidget, DateInput, CheckboxSelectMultiple
+from django.forms import CheckboxSelectMultiple
 
 from .models import Course, Attendance
 
@@ -40,15 +37,13 @@ class AttendanceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.students = kwargs.pop('students')
-        self.lessons = kwargs.pop('lessons')
+        self.lesson = kwargs.pop('lesson')
         super(AttendanceForm, self).__init__(*args, **kwargs)
-        self.fields['lesson'].queryset = self.lessons
-        # events_unregistered_users = User.objects.exclude(id__in=users_id_list)
         self.fields['student'].queryset = self.students
 
     class Meta:
         model = Attendance
-        fields = '__all__'
+        fields = ('student',)
         widgets = {
             'student': CheckboxSelectMultiple(),
         }

@@ -13,5 +13,5 @@ urlpatterns = [
     path('lesson/<int:lesson_id>/attendance/',
          views.attendance, name='attendance'),
     path('lesson/<int:lesson_id>/attendance/edit',
-             views.attendance, name='attendance_edit'),
+             views.attendance_edit, name='attendance_edit'),
 ]
