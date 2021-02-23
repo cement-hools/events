@@ -1,0 +1,40 @@
+2021-02-23 17:00:09,410 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:00:51,688 admin_changes INFO     Урок Пишем "Hello World!": Пользователь maxim заменил учителя maxim на kitty
+2021-02-23 17:06:23,857 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:07:12,215 admin_changes INFO     Урок Пишем "Hello World!": Пользователь maxim заменил учителя kitty на maxim
+2021-02-23 17:11:12,221 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:11:15,776 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:12:27,398 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:12:30,685 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:14:45,392 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:14:47,567 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:15:41,192 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:15:45,013 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:17:22,189 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:18:40,639 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:18:43,180 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:19:48,656 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:19:51,932 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:20:00,395 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:20:02,775 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:25:22,219 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:25:28,501 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:25:31,570 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:26:31,192 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:26:33,680 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:28:00,848 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:28:03,143 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:31:21,394 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:31:23,325 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:31:50,957 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:31:52,994 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:33:32,743 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:33:34,736 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:36:00,792 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:36:02,843 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:37:50,569 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:37:52,570 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:38:30,772 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:38:32,622 django.utils.autoreload INFO     Watching for file changes with StatReloader
+2021-02-23 17:39:07,593 django.utils.autoreload INFO     D:\test_tasks\events\lessons\forms.py changed, reloading.
+2021-02-23 17:39:09,323 django.utils.autoreload INFO     Watching for file changes with StatReloader

@@ -1,11 +1,17 @@
+import logging
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.shortcuts import render, get_object_or_404, redirect
 
+from Moshikov import settings
 from .forms import CourseForm, AttendanceForm, AddStudentOnCourseForm, \
     LessonForm
 from .models import Student, Course, Lesson, Attendance
 from .my_functions import group_required, lessons_in_json
+
+logger = logging.getLogger('admin_changes')
+logging.config.dictConfig(settings.LOGGING)
 
 User = get_user_model()
 
@@ -18,9 +24,6 @@ def index(request):
     """Главная страница."""
     if not request.user.is_authenticated:
         return render(request, 'index.html', {})
-    print('group: ', request.user.groups.all())
-    if request.user.groups.filter(name__in=['admin', ]).exists():
-        print('gooood!!!!')
     return render(request, 'index.html', {})
 
 
@@ -110,14 +113,20 @@ def course_view(request, course_id):
 @group_required(GROUP_ADMIN)
 def lesson_edit(request, lesson_id):
     """Редактировать урок."""
+    request_user = request.user
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     form = LessonForm(request.POST or None, instance=lesson)
-
+    teacher = lesson.teacher
     context = {
         'form': form,
         'lesson': lesson,
     }
     if form.is_valid():
+        form_teacher = form.cleaned_data['teacher']
+        if teacher != form_teacher:
+            log_text = (f'Урок {lesson}: Пользователь {request_user} '
+                        f'заменил учителя {teacher} на {form_teacher}')
+            logger.info(log_text)
         form.save()
         return redirect('course_view', course_id=lesson.course.id)
     return render(request, 'new_lesson.html', context)

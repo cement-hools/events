@@ -1,10 +1,15 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.forms import CheckboxSelectMultiple
 
 from .models import Course, Attendance, Lesson
 
 User = get_user_model()
+
+GROUP_ADMIN = Group.objects.get(name='admin')
+GROUP_TEACHER = Group.objects.get(name='teacher')
+GROUP_STUDENT = Group.objects.get(name='student')
 
 
 class CourseForm(forms.ModelForm):
@@ -33,6 +38,9 @@ class CourseForm(forms.ModelForm):
 
 
 class LessonForm(forms.ModelForm):
+    teacher = forms.ModelChoiceField(
+        queryset=User.objects.filter(groups=GROUP_TEACHER)
+    )
 
     class Meta:
         model = Lesson
@@ -40,7 +48,7 @@ class LessonForm(forms.ModelForm):
 
 
 class AttendanceForm(forms.ModelForm):
-    """"""
+    """Форма посещаемости."""
 
     def __init__(self, *args, **kwargs):
         self.students = kwargs.pop('students')
@@ -56,6 +64,8 @@ class AttendanceForm(forms.ModelForm):
 
 
 class AddStudentOnCourseForm(forms.Form):
+    """Форма добавления студента на курс"""
+
     def __init__(self, *args, **kwargs):
         self.users = kwargs.pop('users')
         super(AddStudentOnCourseForm, self).__init__(*args, **kwargs)
