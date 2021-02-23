@@ -47,3 +47,15 @@ class AttendanceForm(forms.ModelForm):
         widgets = {
             'student': CheckboxSelectMultiple(),
         }
+
+
+class AddStudentOnCourseForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.users = kwargs.pop('users')
+        super(AddStudentOnCourseForm, self).__init__(*args, **kwargs)
+        self.fields['users'].queryset = self.users
+
+    users = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )

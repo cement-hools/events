@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import user_passes_test
 def group_required(*group_names):
     """Права доступа для групп."""
 
-    def in_groups(u):
-        if u.is_authenticated:
-            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
+    def in_groups(user):
+        if user.is_authenticated:
+            if bool(user.groups.filter(
+                    name__in=group_names)) | user.is_superuser:
                 return True
         return False
 
