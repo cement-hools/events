@@ -54,7 +54,6 @@ class Attendance(models.Model):
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     student = models.ManyToManyField(User, related_name='attendances',
                                      blank=True)
-    # attendance = models.BooleanField()
 
     def __str__(self):
         return f'Посещаемость урока {self.lesson}'

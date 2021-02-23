@@ -16,7 +16,7 @@
     background-color: #dbefff; /* Цвет фона слоя */
     padding: 5px; /* Поля вокруг текста */
     margin: 5px;
-    width: 300px; /* Ширина слоя */
+    width: 400px; /* Ширина слоя */
     float: left; /* Обтекание по правому краю */
     }
     .clear {
@@ -39,11 +39,11 @@
 </div>
 <div class="layer2">
     <h4>Уроки:</h4>
-    <a href="">Добавить урок</a>
+    <a href="{% url 'new_lesson' course.id %}">Добавить урок</a>
     <br><br>
     {% for lesson in lessons %}
     <ul>
-        <li> <h5>{{ lesson }}</h5> <a href="{% url 'attendance' lesson.id %}">присутсвие</a> | <a href="">редактировать</a> </li>
+        <li> <h5>{{ lesson }}</h5> <a href="{% url 'attendance' lesson.id %}">присутсвие</a> | <a href="{% url 'lesson_edit' lesson.id %}">редактировать</a> | <a href="{% url 'lesson_delete' lesson.id %}">удалить</a> </li>
     </ul>
     {% endfor %}
 </div>

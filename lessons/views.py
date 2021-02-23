@@ -2,7 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import CourseForm, AttendanceForm, AddStudentOnCourseForm
+from .forms import CourseForm, AttendanceForm, AddStudentOnCourseForm, \
+    LessonForm
 from .models import Student, Course, Lesson, Attendance
 from .my_functions import group_required, lessons_in_json
 
@@ -81,7 +82,7 @@ def course_edit(request, course_id):
     if form.is_valid():
         form.save()
         return redirect('admins_profile')
-    return render(request, "new_course.html", context)
+    return render(request, 'new_course.html', context)
 
 
 @group_required(GROUP_ADMIN)
@@ -103,7 +104,48 @@ def course_view(request, course_id):
         'lessons': lessons,
         'students': students,
     }
-    return render(request, "course_view.html", context)
+    return render(request, 'course_view.html', context)
+
+
+@group_required(GROUP_ADMIN)
+def lesson_edit(request, lesson_id):
+    """Редактировать урок."""
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    form = LessonForm(request.POST or None, instance=lesson)
+
+    context = {
+        'form': form,
+        'lesson': lesson,
+    }
+    if form.is_valid():
+        form.save()
+        return redirect('course_view', course_id=lesson.course.id)
+    return render(request, 'new_lesson.html', context)
+
+
+@group_required(GROUP_ADMIN)
+def new_lesson(request, course_id):
+    """Создание нового урока."""
+    course = get_object_or_404(Course, pk=course_id)
+    form = LessonForm(request.POST or None)
+    context = {
+        'form': form,
+        'course': course,
+    }
+
+    if form.is_valid():
+        form.save()
+        return redirect('course_view', course_id=course_id)
+    return render(request, 'new_lesson.html', context)
+
+
+@group_required(GROUP_ADMIN)
+def lesson_delete(request, lesson_id):
+    """Удалить урок."""
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    course_id = lesson.course.id
+    lesson.delete()
+    return redirect('course_view', course_id=course_id)
 
 
 @group_required(GROUP_ADMIN)
@@ -117,25 +159,24 @@ def attendance(request, lesson_id):
     attendance, created = Attendance.objects.get_or_create(lesson=lesson)
 
     form = AttendanceForm(request.POST or None,
-                          lesson=lesson,
                           students=students_user,
                           instance=attendance,
                           )
     if form.is_valid():
         form.save()
-        return redirect("course_view", course_id=lesson.course.id)
-    return render(request, "attendance.html",
-                  {"form": form, 'course_id': lesson.course.id,
+        return redirect('course_view', course_id=lesson.course.id)
+    return render(request, 'attendance.html',
+                  {'form': form, 'course_id': lesson.course.id,
                    'lesson_id': lesson_id, })
 
 
 @group_required(GROUP_ADMIN)
 def add_students_on_course(request, course_id):
+    """Добавить студента на курс."""
     course = get_object_or_404(Course, pk=course_id)
     all_students = Student.objects.all()
     all_students_id = [student.user.id for student in all_students]
     users_are_not_students = User.objects.all().exclude(id__in=all_students_id)
-    print(users_are_not_students)
 
     form = AddStudentOnCourseForm(request.POST or None,
                                   users=users_are_not_students,
@@ -147,18 +188,19 @@ def add_students_on_course(request, course_id):
             Student.objects.create(user=user, course=course)
             user.groups.add(GROUP_STUDENT)
 
-        return redirect("course_view", course_id=course_id)
+        return redirect('course_view', course_id=course_id)
 
     context = {
         'users_are_not_students': users_are_not_students,
         'course': course,
         'form': form
     }
-    return render(request, "add_students_on_course.html", context)
+    return render(request, 'add_students_on_course.html', context)
 
 
 @group_required(GROUP_ADMIN)
 def remove_from_the_course(request, user_id):
+    """Убрать студента с курса."""
     user = get_object_or_404(User, id=user_id)
     student = get_object_or_404(Student, user=user)
     course = student.course
@@ -166,4 +208,4 @@ def remove_from_the_course(request, user_id):
     user.groups.remove(GROUP_STUDENT)
     student.delete()
 
-    return redirect("course_view", course_id=course.id)
+    return redirect('course_view', course_id=course.id)

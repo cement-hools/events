@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import CheckboxSelectMultiple
 
-from .models import Course, Attendance
+from .models import Course, Attendance, Lesson
 
 User = get_user_model()
 
@@ -32,12 +32,18 @@ class CourseForm(forms.ModelForm):
         # }
 
 
+class LessonForm(forms.ModelForm):
+
+    class Meta:
+        model = Lesson
+        exclude = ()
+
+
 class AttendanceForm(forms.ModelForm):
     """"""
 
     def __init__(self, *args, **kwargs):
         self.students = kwargs.pop('students')
-        self.lesson = kwargs.pop('lesson')
         super(AttendanceForm, self).__init__(*args, **kwargs)
         self.fields['student'].queryset = self.students
 
